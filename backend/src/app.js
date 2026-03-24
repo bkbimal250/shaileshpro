@@ -26,6 +26,11 @@ app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Root Route
+app.get("/", (req, res) => {
+  res.status(200).json({ status: "active", message: "Shailesh Kumar Portfolio API. Operational Core Live." });
+});
+
 // Health Check
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "ok", message: "Server is healthy" });
