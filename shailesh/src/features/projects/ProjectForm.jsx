@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
-import { Plus, X, Image as ImageIcon } from "lucide-react";
+import { Plus, X } from "lucide-react";
 
 const categories = ["Web", "Mobile", "Backend", "Marketing", "Design"];
 
@@ -39,100 +39,169 @@ const ProjectForm = ({ onSubmit, initialData = {} }) => {
   };
 
   const removeGalleryItem = (idx) => {
-    setForm({ ...form, gallery: form.gallery.filter((_, i) => i !== idx) });
+    setForm({
+      ...form,
+      gallery: form.gallery.filter((_, i) => i !== idx),
+    });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = {
       ...form,
-      tools: form.tools.split(",").map(t => t.trim()).filter(t => t !== ""),
+      tools: form.tools
+        .split(",")
+        .map((t) => t.trim())
+        .filter(Boolean),
     };
     onSubmit(data);
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="grid md:grid-cols-2 gap-6">
-        <Input label="Project Title" name="title" value={form.title} onChange={handleChange} required />
-        <div className="flex flex-col gap-3 w-full">
-          <label className="text-[9px] font-black uppercase text-white/20 tracking-[0.3em] italic leading-none ml-4">Category</label>
-          <select 
-            name="category" 
-            value={form.category} 
+
+      {/* BASIC */}
+      <div className="grid md:grid-cols-2 gap-4">
+        <Input
+          label="Project Title"
+          name="title"
+          value={form.title}
+          onChange={handleChange}
+          required
+        />
+
+        <div>
+          <label className="text-sm text-white/50 mb-1 block">
+            Category
+          </label>
+          <select
+            name="category"
+            value={form.category}
             onChange={handleChange}
-            className="w-full bg-bg-canvas border border-white/5 rounded-2xl px-6 py-4 text-white font-black uppercase tracking-widest italic outline-none focus:border-primary/40 focus:bg-bg-white transition-all shadow-inner-light text-[10px]"
+            className="w-full p-3 rounded-lg bg-bg-canvas border border-white/10 text-sm outline-none"
           >
-            {categories.map(c => <option key={c} value={c} className="bg-bg-canvas">{c}</option>)}
+            {categories.map((c) => (
+              <option key={c} value={c} className="bg-bg-canvas">
+                {c}
+              </option>
+            ))}
           </select>
         </div>
       </div>
 
-      <div className="flex flex-col gap-3">
-        <label className="text-[9px] font-black uppercase text-white/20 tracking-[0.4em] italic leading-none ml-4">Deployment Summary</label>
+      {/* DESCRIPTION */}
+      <div>
+        <label className="text-sm text-white/50 mb-1 block">
+          Description
+        </label>
         <textarea
           name="description"
-          rows="3"
-          className="w-full bg-bg-canvas border border-white/5 rounded-2xl p-6 text-white text-[10px] italic font-bold leading-tight uppercase tracking-tight focus:border-primary/40 focus:bg-bg-white transition-all shadow-inner-light"
+          rows={3}
+          className="w-full p-3 rounded-lg bg-bg-canvas border border-white/10 text-sm outline-none"
           value={form.description}
           onChange={handleChange}
           required
         />
       </div>
 
-      <div className="grid md:grid-cols-2 gap-6">
-        <Input label="Primary Image URL" name="image" value={form.image} onChange={handleChange} placeholder="https://..." />
-        <Input label="Impact Metric (e.g. +300% ROI)" name="results" value={form.results} onChange={handleChange} />
+      {/* IMAGE + RESULT */}
+      <div className="grid md:grid-cols-2 gap-4">
+        <Input
+          label="Image URL"
+          name="image"
+          value={form.image}
+          onChange={handleChange}
+        />
+
+        <Input
+          label="Result"
+          name="results"
+          value={form.results}
+          onChange={handleChange}
+        />
       </div>
 
-      <div className="space-y-4 pt-4 border-t border-white/5">
-        <div className="flex justify-between items-center mb-2 px-4">
-           <label className="text-[9px] font-black uppercase text-white/20 tracking-[0.4em] italic flex items-center gap-2"><ImageIcon size={14} /> Intelligence Assets</label>
-           <button type="button" onClick={addGalleryItem} className="text-primary hover:text-white transition-colors"><Plus size={18} /></button>
+      {/* GALLERY */}
+      <div className="space-y-3">
+        <div className="flex justify-between items-center">
+          <h3 className="text-sm font-medium">Gallery</h3>
+          <button type="button" onClick={addGalleryItem}>
+            <Plus size={16} />
+          </button>
         </div>
-        <div className="grid grid-cols-1 gap-3">
-           {form.gallery.map((img, idx) => (
-             <div key={idx} className="flex gap-2 items-center group">
-               <Input 
-                 placeholder="Asset URL" 
-                 value={img} 
-                 onChange={(e) => handleGalleryChange(idx, e.target.value)} 
-                 className="flex-1"
-               />
-               <button type="button" onClick={() => removeGalleryItem(idx)} className="text-white/20 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"><X size={16} /></button>
-             </div>
-           ))}
-        </div>
+
+        {form.gallery.map((img, idx) => (
+          <div key={idx} className="flex gap-2">
+            <input
+              placeholder="Image URL"
+              value={img}
+              onChange={(e) => handleGalleryChange(idx, e.target.value)}
+              className="flex-1 p-2 rounded bg-bg-canvas border border-white/10 text-sm"
+            />
+            <button type="button" onClick={() => removeGalleryItem(idx)}>
+              <X size={14} />
+            </button>
+          </div>
+        ))}
       </div>
 
-      <div className="grid md:grid-cols-2 gap-6 pt-4 border-t border-white/5 uppercase tracking-widest text-xs">
-        <Input label="Live Node Access" name="liveUrl" value={form.liveUrl} onChange={handleChange} placeholder="https://..." />
-        <Input label="Core Repository" name="githubUrl" value={form.githubUrl} onChange={handleChange} placeholder="https://..." />
+      {/* LINKS */}
+      <div className="grid md:grid-cols-2 gap-4">
+        <Input
+          label="Live URL"
+          name="liveUrl"
+          value={form.liveUrl}
+          onChange={handleChange}
+        />
+
+        <Input
+          label="GitHub URL"
+          name="githubUrl"
+          value={form.githubUrl}
+          onChange={handleChange}
+        />
       </div>
 
-      <Input label="Strategic Toolset (comma separated)" name="tools" value={form.tools} onChange={handleChange} placeholder="Meta Ads, Google Analytics, SEO" />
+      {/* TOOLS */}
+      <Input
+        label="Tools (comma separated)"
+        name="tools"
+        value={form.tools}
+        onChange={handleChange}
+      />
 
-      <div className="flex items-center gap-10">
-        <div className="flex items-center gap-3 cursor-pointer group">
-          <input 
-            type="checkbox" 
-            name="featured" 
-            id="featured" 
-            checked={form.featured} 
+      {/* OPTIONS */}
+      <div className="flex items-center justify-between">
+        <label className="flex items-center gap-2 text-sm text-white/70">
+          <input
+            type="checkbox"
+            name="featured"
+            checked={form.featured}
             onChange={handleChange}
-            className="w-5 h-5 accent-primary bg-bg-canvas border-white/10 rounded-lg"
+            className="accent-primary"
           />
-          <label htmlFor="featured" className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20 group-hover:text-primary transition-colors italic leading-none">Featured Strategic Node</label>
-        </div>
-        <div className="flex items-center gap-4">
-           <label className="text-[9px] font-black uppercase text-white/20 tracking-[0.3em] italic leading-none">ORDER</label>
-           <input type="number" name="order" value={form.order} onChange={handleChange} className="w-20 bg-bg-canvas border border-white/5 rounded-xl px-4 py-2 text-white font-black uppercase tracking-widest text-[10px] focus:border-primary/40 outline-none" />
+          Featured project
+        </label>
+
+        <div className="flex items-center gap-2">
+          <label className="text-sm text-white/50">Order</label>
+          <input
+            type="number"
+            name="order"
+            value={form.order}
+            onChange={handleChange}
+            className="w-16 p-2 rounded bg-bg-canvas border border-white/10 text-sm"
+          />
         </div>
       </div>
 
-      <div className="flex justify-end pt-8 border-t border-white/5">
-        <Button type="submit" className="px-12 h-14 rounded-2xl">REGISTRY UPDATE</Button>
+      {/* SUBMIT */}
+      <div className="flex justify-end pt-4">
+        <Button type="submit">
+          Save Project
+        </Button>
       </div>
+
     </form>
   );
 };

@@ -16,33 +16,33 @@ const Sidebar = ({ onClose }) => {
   const location = useLocation();
 
   return (
-    <aside className="w-80 h-full bg-bg-canvas border-r border-white/5 p-8 flex flex-col relative z-50 shadow-premium overflow-y-auto">
+    <aside className="w-64 h-full bg-bg-canvas border-r border-white/5 p-5 flex flex-col relative z-50 shadow-premium overflow-y-auto">
       {/* Mobile Close Button */}
       {onClose && (
-        <button 
+        <button
           onClick={onClose}
-          className="absolute top-8 right-8 text-white/20 hover:text-white lg:hidden transition-colors"
+          className="absolute top-6 right-6 text-white/20 hover:text-white lg:hidden transition-colors"
         >
-          <X size={24} />
+          <X size={20} />
         </button>
       )}
 
       {/* Brand */}
-      <div className="flex items-center gap-4 mb-16 px-4">
-        <div className="w-10 h-10 bg-primary rounded-2xl flex items-center justify-center text-white shadow-3xl shadow-primary/20 transform -rotate-6">
-           <LayoutDashboard size={20} />
+      <div className="flex items-center gap-3 mb-10 px-2 mt-2">
+        <div className="w-9 h-9 bg-primary rounded-xl flex items-center justify-center text-white shadow-3xl shadow-primary/20 transform -rotate-6">
+          <LayoutDashboard size={18} />
         </div>
         <div>
-           <div className="text-lg font-black text-white italic uppercase tracking-tighter leading-none">Shailesh.</div>
-           <div className="flex items-center gap-2 mt-1 opacity-50">
-              <ShieldCheck size={10} className="text-secondary" />
-              <div className="text-[9px] font-black text-white/30 uppercase tracking-[0.4em] leading-none italic">ADMIN V2.4</div>
-           </div>
+          <div className="text-base font-black text-white italic uppercase tracking-tighter leading-none">Shailesh.</div>
+          <div className="flex items-center gap-2 mt-1 opacity-50">
+            <ShieldCheck size={8} className="text-secondary" />
+            <div className="text-[8px] font-black text-white/30 uppercase tracking-[0.4em] leading-none italic">ADMIN V2.4</div>
+          </div>
         </div>
       </div>
 
       {/* Navigation */}
-      <nav className="flex flex-col gap-2 flex-1">
+      <nav className="flex flex-col gap-1.5 flex-1">
         {links.map((link) => {
           const active = location.pathname === link.path;
 
@@ -51,7 +51,7 @@ const Sidebar = ({ onClose }) => {
               key={link.name}
               to={link.path}
               onClick={onClose}
-              className={`flex items-center gap-4 px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] italic transition-all group ${active
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl text-[9px] font-black uppercase tracking-[0.2em] italic transition-all group ${active
                 ? "bg-primary text-white shadow-3xl shadow-primary/20 scale-[1.02]"
                 : "text-white/40 hover:bg-white/5 hover:text-white"
                 }`}
@@ -66,12 +66,12 @@ const Sidebar = ({ onClose }) => {
       </nav>
 
       {/* Footer Info */}
-      <div className="mt-10 pt-10 border-t border-white/5 px-4 text-left">
-         <div className="text-[8px] font-black text-white/20 uppercase tracking-[0.4em] mb-6 italic leading-none">Security Status: Active</div>
-         <button className="flex items-center gap-4 px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] italic text-red-500/60 hover:text-red-600 hover:bg-red-500/5 transition-all w-full border border-transparent hover:border-red-500/10">
-            <LogOut size={16} />
-            EJECT SESSION
-         </button>
+      <div className="mt-8 pt-8 border-t border-white/5 px-2 text-left">
+        <div className="text-[7px] font-black text-white/20 uppercase tracking-[0.4em] mb-4 italic leading-none">Security Status: Active</div>
+        <button className="flex items-center gap-3 px-4 py-3 rounded-xl text-[9px] font-black uppercase tracking-[0.2em] italic text-red-500/60 hover:text-red-600 hover:bg-red-500/5 transition-all w-full border border-transparent hover:border-red-500/10">
+          <LogOut size={16} />
+          EJECT SESSION
+        </button>
       </div>
     </aside>
   );

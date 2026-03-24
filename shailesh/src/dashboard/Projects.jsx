@@ -1,12 +1,19 @@
 import { useState } from "react";
 import ProjectForm from "@/features/projects/ProjectForm";
 import useProjects from "@/features/projects/useProjects";
-import { Loader2, Trash2, ExternalLink, Edit2, X, Plus, Search, Briefcase, Zap, Target } from "lucide-react";
+import { Loader2, Trash2, ExternalLink, Edit2, X, Plus, Search } from "lucide-react";
 import Button from "@/components/ui/Button";
-import Input from "@/components/ui/Input";
 
 const Projects = () => {
-  const { projects, loading, error, removeProject, addProject, modifyProject } = useProjects();
+  const {
+    projects,
+    loading,
+    error,
+    removeProject,
+    addProject,
+    modifyProject,
+  } = useProjects();
+
   const [showForm, setShowForm] = useState(false);
   const [editingProject, setEditingProject] = useState(null);
   const [search, setSearch] = useState("");
@@ -31,116 +38,156 @@ const Projects = () => {
   };
 
   const handleDelete = (id) => {
-    if (window.confirm("Are you sure you want to delete this project?")) {
+    if (window.confirm("Delete this project?")) {
       removeProject(id);
     }
   };
 
-  const filteredProjects = projects.filter(p => 
-    p.title.toLowerCase().includes(search.toLowerCase()) || 
-    p.category.toLowerCase().includes(search.toLowerCase())
+  const filteredProjects = projects.filter(
+    (p) =>
+      p.title.toLowerCase().includes(search.toLowerCase()) ||
+      p.category.toLowerCase().includes(search.toLowerCase())
   );
 
   if (loading && projects.length === 0) {
     return (
-      <div className="flex h-64 items-center justify-center text-white/50">
-        <Loader2 className="animate-spin mr-2 text-primary" /> Synchronizing Project Vault...
+      <div className="flex h-64 items-center justify-center text-white/60">
+        <Loader2 className="animate-spin mr-2" />
+        Loading projects...
       </div>
     );
   }
 
   return (
-    <div className="pb-24">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 mb-16 pb-8 border-b border-white/5">
+    <div className="pb-10">
+
+      {/* HEADER */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
         <div>
-          <div className="flex items-center gap-3 mb-2">
-             <Briefcase size={14} className="text-secondary" />
-             <h2 className="text-[10px] font-black uppercase text-white/20 tracking-[0.4em] leading-none mb-1 italic">Asset Inventory</h2>
-          </div>
-          <h1 className="text-3xl md:text-4xl font-black text-white italic uppercase tracking-tighter leading-none">Project Vault</h1>
+          <h1 className="text-xl font-semibold">Projects</h1>
+          <p className="text-sm text-white/50">
+            Manage your projects
+          </p>
         </div>
-        <div className="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
-           <div className="relative w-full sm:w-72">
-              <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-white/10" size={16} />
-              <input 
-                type="text" 
-                placeholder="FIND RECORD..." 
-                className="w-full bg-bg-canvas border border-white/5 rounded-2xl pl-14 pr-6 py-4 text-white font-black uppercase tracking-widest text-[9px] focus:outline-none focus:border-primary/40 transition-all italic shadow-inner-light placeholder:text-white/10"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-           </div>
-           <Button onClick={() => setShowForm(!showForm)} className="h-12 w-full sm:w-16 rounded-xl flex-shrink-0">
-             {showForm ? <X size={20} /> : <Plus size={20} />}
-           </Button>
+
+        <div className="flex gap-3 w-full md:w-auto">
+
+          {/* SEARCH */}
+          <div className="relative w-full md:w-60">
+            <Search
+              size={14}
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40"
+            />
+            <input
+              type="text"
+              placeholder="Search..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full pl-9 pr-3 py-2 rounded-lg bg-bg-canvas border border-white/10 text-sm outline-none focus:border-primary"
+            />
+          </div>
+
+          {/* BUTTON */}
+          <Button
+            onClick={() => setShowForm(!showForm)}
+            className="flex items-center gap-2"
+          >
+            {showForm ? <X size={16} /> : <Plus size={16} />}
+            {showForm ? "Close" : "Add"}
+          </Button>
         </div>
       </div>
 
+      {/* ERROR */}
       {error && (
-        <div className="p-6 bg-red-500/10 border border-red-500/20 text-red-500 rounded-2xl mb-10 text-[9px] font-black uppercase tracking-[0.4em] italic shadow-sm animate-pulse">
-          Critical Sync Error: {error}
+        <div className="mb-6 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-sm text-red-400">
+          {error}
         </div>
       )}
 
+      {/* FORM */}
       {showForm && (
-        <div className="max-w-4xl mb-16 bg-bg-white p-8 md:p-12 rounded-[3.5rem] border border-white/5 shadow-premium animate-in fade-in zoom-in-95 duration-500 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 blur-3xl rounded-full" />
-          <div className="flex justify-between items-center mb-10 border-b border-white/5 pb-8">
-             <div className="flex items-center gap-4">
-                <div className="w-10 h-10 bg-bg-canvas rounded-xl flex items-center justify-center text-primary shadow-inner-light">
-                   <Target size={18} />
-                </div>
-                <h2 className="text-[10px] font-black text-white uppercase tracking-[0.4em] italic leading-none">{editingProject ? "Update Strategic Data" : "Initialize New Operation"}</h2>
-             </div>
-             <button onClick={closeForm} className="text-white/20 hover:text-primary transition-colors hover:scale-110 active:scale-90"><X size={20} /></button>
+        <div className="mb-8 bg-white/5 border border-white/10 rounded-xl p-6">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="font-medium">
+              {editingProject ? "Edit Project" : "Add Project"}
+            </h2>
+            <button onClick={closeForm}>
+              <X size={18} />
+            </button>
           </div>
-          <ProjectForm onSubmit={handleAddProject} initialData={editingProject || {}} />
+
+          <ProjectForm
+            onSubmit={handleAddProject}
+            initialData={editingProject || {}}
+          />
         </div>
       )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
+      {/* GRID */}
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredProjects.length > 0 ? (
           filteredProjects.map((p) => (
-            <div key={p._id} className="bg-bg-white border border-white/5 p-8 rounded-[3rem] flex flex-col group hover:border-primary/30 transition-all shadow-premium relative overflow-hidden h-full">
-              <div className="flex items-start justify-between mb-8">
-                 <div className="w-16 h-16 bg-bg-canvas rounded-2xl flex items-center justify-center border border-white/5 group-hover:scale-105 group-hover:bg-primary/5 transition-all overflow-hidden shadow-inner-light">
-                   {p.image ? (
-                     <img src={p.image} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" />
-                   ) : (
-                     <Briefcase size={28} className="text-white/5" />
-                   )}
-                 </div>
-                 <div className="flex gap-2">
-                    <button onClick={() => startEdit(p)} className="w-10 h-10 flex items-center justify-center bg-bg-canvas text-white/20 hover:text-primary hover:border-primary/20 rounded-xl transition-all border border-white/5 shadow-sm active:scale-90"><Edit2 size={16} /></button>
-                    <button onClick={() => handleDelete(p._id)} className="w-10 h-10 flex items-center justify-center bg-bg-canvas text-white/20 hover:text-red-500 hover:border-red-100 rounded-xl transition-all border border-white/5 shadow-sm active:scale-90"><Trash2 size={16} /></button>
-                 </div>
+            <div
+              key={p._id}
+              className="bg-white/5 border border-white/10 rounded-xl p-5 flex flex-col"
+            >
+
+              {/* TOP */}
+              <div className="flex justify-between items-start mb-4">
+                <span className="text-xs text-white/50">
+                  {p.category}
+                </span>
+
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => startEdit(p)}
+                    className="w-8 h-8 flex items-center justify-center border border-white/10 rounded-lg hover:bg-white/5 transition"
+                  >
+                    <Edit2 size={14} />
+                  </button>
+
+                  <button
+                    onClick={() => handleDelete(p._id)}
+                    className="w-8 h-8 flex items-center justify-center border border-red-500/20 text-red-400 rounded-lg hover:bg-red-500/10 transition"
+                  >
+                    <Trash2 size={14} />
+                  </button>
+                </div>
               </div>
 
-              <div className="flex-1">
-                 <div className="flex items-center gap-3 mb-4">
-                    <span className="px-4 py-1.5 bg-bg-canvas text-[8px] font-black text-primary border border-white/5 rounded-full uppercase tracking-[0.2em] italic leading-none transition-colors">{p.category || "Execution Node"}</span>
-                    {p.featured && <div className="w-1.5 h-1.5 rounded-full bg-amber-400 shadow-xl" />}
-                 </div>
-                 <h3 className="text-2xl font-black text-white uppercase italic tracking-tighter leading-none mb-4 group-hover:text-primary transition-colors">{p.title}</h3>
-                 <p className="text-white/40 text-xs italic font-bold leading-relaxed line-clamp-2 mb-8 uppercase tracking-tight">{p.description}</p>
+              {/* BODY */}
+              <h3 className="font-semibold text-lg mb-2">
+                {p.title}
+              </h3>
+
+              <p className="text-sm text-white/60 line-clamp-2 flex-1">
+                {p.description}
+              </p>
+
+              {/* FOOTER */}
+              <div className="flex justify-between items-center mt-4">
+                <span className="text-xs text-primary">
+                  {p.results || "Live"}
+                </span>
+
+                {p.liveUrl && (
+                  <a
+                    href={p.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-white/50 hover:text-primary"
+                  >
+                    <ExternalLink size={16} />
+                  </a>
+                )}
               </div>
 
-              <div className="flex items-center justify-between pt-8 border-t border-white/5 mt-auto">
-                 <div className="flex items-center gap-2">
-                    <Zap size={12} className="text-accent" />
-                    <div className="text-[9px] font-black text-accent uppercase tracking-[0.3em] italic leading-none">{p.results?.toUpperCase() || "LIVE OPS"}</div>
-                 </div>
-                 {p.liveUrl && (
-                    <a href={p.liveUrl} target="_blank" rel="noopener noreferrer" className="text-white/10 hover:text-primary transition-colors hover:scale-110 active:scale-90">
-                       <ExternalLink size={20} />
-                    </a>
-                 )}
-              </div>
             </div>
           ))
         ) : (
-          <div className="col-span-full py-32 text-center border-2 border-dashed border-white/5 rounded-[4rem] text-white/10 italic text-[10px] font-black uppercase tracking-[0.6em] animate-pulse">
-            NO RECORDS INDEXED.
+          <div className="col-span-full text-center py-16 text-white/50">
+            No projects found.
           </div>
         )}
       </div>

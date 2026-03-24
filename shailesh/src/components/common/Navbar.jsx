@@ -29,54 +29,57 @@ export default function Navbar() {
 
   return (
     <>
+      {/* NAVBAR */}
       <nav
         className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled
-          ? "bg-white/80 backdrop-blur-xl border-b border-border shadow-sm"
+          ? "bg-bg-canvas/80 backdrop-blur-xl border-b border-white/10"
           : "bg-transparent"
           }`}
       >
-        <div className="max-w-7xl mx-auto px-6 md:px-10 h-16 flex items-center justify-between">
-          {/* Logo */}
-          <Link to="/" className="flex items-center group">
+        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+
+          {/* LOGO */}
+          <Link to="/" className="flex items-center">
             <img
               src="/shailesh_logo.png"
-              alt="Shailesh Kumar"
-              className="
-      h-10 md:h-16 w-auto
-      object-contain
-      transition-all duration-300
-      group-hover:scale-105
-    "
+              alt="Logo"
+              className="h-12 w-25 object-contain"
             />
           </Link>
 
-          {/* Desktop Menu */}
-          <div className="hidden lg:flex items-center gap-8">
+          {/* DESKTOP MENU */}
+          <div className="hidden lg:flex items-center gap-6">
+
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 to={link.path}
-                className={`text-sm font-medium transition-colors ${isActive(link.path)
+                className={`relative text-sm font-medium transition ${isActive(link.path)
                   ? "text-primary"
-                  : scrolled
-                    ? "text-gray-800 hover:text-primary"
-                    : "text-white/80 hover:text-white"
+                  : "text-white/70 hover:text-white"
                   }`}
               >
                 {link.name}
+
+                {/* ACTIVE UNDERLINE */}
+                {isActive(link.path) && (
+                  <span className="absolute left-0 -bottom-1 w-full h-[2px] bg-primary rounded-full" />
+                )}
               </Link>
             ))}
 
+            {/* CTA */}
             <Link to="/contact">
-              <button className="ml-4 px-5 h-10 rounded-xl bg-primary text-white text-sm font-medium hover:bg-primary-dark transition-all">
+              <button className="ml-4 px-5 py-2 rounded-lg bg-primary text-white text-sm font-medium hover:opacity-90 transition">
                 Hire Me
               </button>
             </Link>
+
           </div>
 
-          {/* Mobile Toggle */}
+          {/* MOBILE BUTTON */}
           <button
-            className="lg:hidden w-10 h-10 flex items-center justify-center rounded-lg border border-border"
+            className="lg:hidden w-10 h-10 flex items-center justify-center border border-white/10 rounded-lg"
             onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? <X size={20} /> : <Menu size={20} />}
@@ -84,30 +87,31 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile Menu */}
-      {isOpen && (
-        <div className="fixed inset-0 z-40 bg-white flex flex-col justify-center items-center gap-8 lg:hidden">
-          {navLinks.map((link) => (
-            <Link
-              key={link.name}
-              to={link.path}
-              onClick={() => setIsOpen(false)}
-              className={`text-2xl font-semibold ${isActive(link.path)
-                ? "text-primary"
-                : "text-text-secondary hover:text-primary"
-                }`}
-            >
-              {link.name}
-            </Link>
-          ))}
-
-          <Link to="/contact" onClick={() => setIsOpen(false)}>
-            <button className="mt-6 px-6 py-3 rounded-xl bg-primary text-white font-medium">
-              Hire Me
-            </button>
+      {/* MOBILE MENU */}
+      <div
+        className={`fixed inset-0 z-40 bg-bg-canvas flex flex-col items-center justify-center gap-8 transition-all duration-300 ${isOpen ? "opacity-100 visible" : "opacity-0 invisible"
+          }`}
+      >
+        {navLinks.map((link) => (
+          <Link
+            key={link.name}
+            to={link.path}
+            onClick={() => setIsOpen(false)}
+            className={`text-2xl font-semibold ${isActive(link.path)
+              ? "text-primary"
+              : "text-white/70 hover:text-white"
+              }`}
+          >
+            {link.name}
           </Link>
-        </div>
-      )}
+        ))}
+
+        <Link to="/contact" onClick={() => setIsOpen(false)}>
+          <button className="mt-6 px-6 py-3 rounded-lg bg-primary text-white font-medium">
+            Hire Me
+          </button>
+        </Link>
+      </div>
     </>
   );
 }
