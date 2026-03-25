@@ -17,6 +17,14 @@ const projectSchema = new mongoose.Schema({
     enum: ["Web", "Mobile", "Backend", "Marketing", "Design"],
   },
 
+  challenges: {
+    type: String
+  },
+
+  solution: {
+    type: String,
+  },
+
   results: String,
 
   featured: { type: Boolean, default: false },
