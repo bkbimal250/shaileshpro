@@ -22,7 +22,7 @@ const app = express();
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://shaileshpro.netlify.app/",
+    "https://shaileshpro.netlify.app",
     process.env.CLIENT_URL, // e.g. https://shaileshpro.netlify.app
   ].filter(Boolean),
   credentials: true
