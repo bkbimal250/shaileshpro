@@ -33,7 +33,12 @@ const ProjectCard = ({ project }) => {
         <div className="p-4 flex flex-col flex-1">
 
           <h3 className="font-semibold text-lg mb-2 group-hover:text-primary transition">
-            {project.title}
+
+            {project.title
+              ?.split(' ')
+              .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(' ') || "Project Title"}
+
           </h3>
 
           <p className="text-sm text-white/60 line-clamp-2 flex-1">

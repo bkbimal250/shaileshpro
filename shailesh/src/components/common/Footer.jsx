@@ -6,6 +6,7 @@ import {
    Youtube,
    Mail,
    Phone,
+   Facebook,
 } from "lucide-react";
 
 const socialIcons = {
@@ -13,7 +14,12 @@ const socialIcons = {
    Instagram: <Instagram size={18} />,
    Twitter: <Twitter size={18} />,
    YouTube: <Youtube size={18} />,
+   Facebook: <Facebook size={18} />,
+   Mail: <Mail size={18} />,
+   Phone: <Phone size={18} />,
 };
+
+
 
 const Footer = () => {
    const { about } = useAbout();
@@ -27,7 +33,7 @@ const Footer = () => {
                {/* BRAND */}
                <div>
                   <h2 className="text-xl font-semibold">
-                     {about?.name || "Your Name"}
+                     {(about?.name)?.toUpperCase() || "SHAILESH PATEL"}
                   </h2>
 
                   <p className="text-white/60 text-sm mt-3 max-w-xs">
@@ -98,7 +104,7 @@ const Footer = () => {
 
             {/* BOTTOM */}
             <div className="border-t border-white/10 mt-10 pt-6 text-center text-sm text-white/40">
-               © {new Date().getFullYear()} {about?.name || "Your Name"}. All rights reserved.
+               © {new Date().getFullYear()} {(about?.name)?.toUpperCase() || "SHAILESH PATEL"}. All rights reserved.
             </div>
 
          </div>

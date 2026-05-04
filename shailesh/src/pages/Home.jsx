@@ -168,56 +168,73 @@ const Home = () => {
       {/* SOCIAL PROOF - PERFORMANCE DECK */}
       <Section className="py-24 border-t border-white/10 relative overflow-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
-        
+
         <Container>
           <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
             <div className="max-w-xl">
-              <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">Social Proof</h2>
-              <p className="text-white/50 text-lg">Measurable impact across global digital ecosystems.</p>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-bold uppercase tracking-widest mb-4">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                Real-time Impact
+              </div>
+              <h2 className="text-4xl md:text-6xl font-bold tracking-tighter mb-4 leading-none">Social Proof</h2>
+              <p className="text-white/50 text-lg md:text-xl font-light">Measurable impact across global digital ecosystems.</p>
             </div>
-            <a href="/social-portfolio" className="group flex items-center gap-2 text-primary text-sm font-semibold">
-              View Analytics <ArrowUpRight size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition" />
+            <a href="/social-portfolio" className="group flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 px-5 py-2.5 rounded-full text-white text-xs font-bold uppercase tracking-widest transition-all">
+              View Analytics <ArrowUpRight size={16} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition text-primary" />
             </a>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {socials.slice(0, 4).map((s, i) => (
+            {socials.filter(s => s.isActive !== false).slice(0, 4).map((s, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
+                transition={{
+                  duration: 0.8,
+                  delay: i * 0.1,
+                  ease: [0.21, 0.47, 0.32, 0.98]
+                }}
                 viewport={{ once: true }}
-                className="bg-white/[0.03] border border-white/10 rounded-3xl p-8 hover:border-primary/40 hover:bg-white/[0.05] transition-all group relative overflow-hidden"
+                className="bg-gradient-to-br from-white/[0.05] to-transparent border border-white/10 rounded-[2rem] p-8 hover:border-primary/50 hover:bg-white/[0.08] transition-all group relative overflow-hidden h-full flex flex-col justify-between"
               >
-                <div className="flex justify-between items-start mb-10">
-                  <div className="w-12 h-12 bg-bg-canvas rounded-2xl flex items-center justify-center border border-white/10 group-hover:scale-110 group-hover:bg-primary/10 transition-all duration-500">
-                    {platformIcons[s.platform] || <Globe size={24} className="text-white/20" />}
+                {/* Background Glow */}
+                <div className="absolute -right-10 -top-10 w-32 h-32 bg-primary/10 blur-[50px] rounded-full group-hover:bg-primary/20 transition-colors" />
+
+                <div>
+                  <div className="flex justify-between items-start mb-12">
+                    <div className="w-14 h-14 bg-bg-canvas rounded-2xl flex items-center justify-center border border-white/10 group-hover:border-primary/30 group-hover:scale-110 group-hover:bg-primary/5 transition-all duration-700">
+                      {platformIcons[s.platform] || <Globe size={28} className="text-white/20" />}
+                    </div>
+                    <div className="flex flex-col items-end">
+                      <div className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em] group-hover:text-primary/60 transition-colors mb-1">
+                        Verified
+                      </div>
+                      <div className="h-0.5 w-6 bg-primary/20 group-hover:w-10 group-hover:bg-primary/40 transition-all duration-700" />
+                    </div>
                   </div>
-                  <div className="text-[10px] font-bold text-white/20 uppercase tracking-[0.2em] group-hover:text-primary transition-colors">
-                    Live Data
+
+                  <div className="space-y-1">
+                    <div className="text-5xl md:text-6xl font-black tracking-tighter group-hover:text-primary transition-colors duration-500">
+                      {s.followers >= 1000 ? `${(s.followers / 1000).toFixed(1)}k` : s.followers || "0"}
+                      <span className="text-primary/40 group-hover:text-primary transition-colors ml-0.5">+</span>
+                    </div>
+                    <div className="text-[10px] font-black text-white/40 uppercase tracking-[0.4em] italic pl-1">
+                      Platform Reach
+                    </div>
                   </div>
                 </div>
 
-                <div className="space-y-4">
-                  <div>
-                    <div className="text-4xl md:text-5xl font-bold tracking-tighter mb-1">
-                      {s.followers?.toLocaleString() || "0"}
-                      <span className="text-primary text-xl ml-1">+</span>
-                    </div>
-                    <div className="text-[11px] font-bold text-white/40 uppercase tracking-[0.3em] italic">
-                      Verified Reach
-                    </div>
-                  </div>
-
-                  <div className="pt-6 border-t border-white/5 flex items-center justify-between">
-                    <span className="text-sm font-medium text-white/60">
+                <div className="mt-10 pt-6 border-t border-white/5 flex items-center justify-between">
+                  <div className="flex flex-col">
+                    <span className="text-xs font-bold text-white/30 uppercase tracking-widest mb-1">Account</span>
+                    <span className="text-sm font-semibold text-white/80 group-hover:text-white transition-colors">
                       {s.handle || s.platform}
                     </span>
-                    <div className="flex items-center gap-1.5 py-1 px-3 bg-primary/10 rounded-full border border-primary/20">
-                      <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                      <span className="text-[9px] font-bold text-primary uppercase">{s.growth || "Active"}</span>
-                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 py-1.5 px-3 bg-white/5 group-hover:bg-primary/10 rounded-xl border border-white/10 group-hover:border-primary/20 transition-all">
+                    <div className="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_8px_rgba(var(--primary-rgb),0.8)] animate-pulse" />
+                    <span className="text-[9px] font-black text-white/60 group-hover:text-primary uppercase tracking-tighter">{s.growth || "Active"}</span>
                   </div>
                 </div>
               </motion.div>

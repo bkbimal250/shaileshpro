@@ -16,9 +16,12 @@ const SocialForm = ({ onSubmit, initialData = {} }) => {
     engagementRate: initialData.engagementRate || "",
     niche: initialData.niche || "",
     managed: initialData.managed !== undefined ? initialData.managed : true,
+    isPersonal: initialData.isPersonal || false,
     isFeatured: initialData.isFeatured || false,
+    isActive: initialData.isActive !== undefined ? initialData.isActive : true,
     order: initialData.order || 0,
     highlights: initialData.highlights || [],
+    topPosts: initialData.topPosts || [],
     campaignTypes: initialData.campaignTypes
       ? initialData.campaignTypes.join(", ")
       : "",
@@ -53,6 +56,27 @@ const SocialForm = ({ onSubmit, initialData = {} }) => {
     const list = [...form.highlights];
     list[idx][field] = val;
     setForm({ ...form, highlights: list });
+  };
+
+  // TOP POSTS
+  const addPost = () => {
+    setForm({
+      ...form,
+      topPosts: [...form.topPosts, { image: "", link: "", description: "" }],
+    });
+  };
+
+  const removePost = (idx) => {
+    setForm({
+      ...form,
+      topPosts: form.topPosts.filter((_, i) => i !== idx),
+    });
+  };
+
+  const updatePost = (idx, field, val) => {
+    const list = [...form.topPosts];
+    list[idx][field] = val;
+    setForm({ ...form, topPosts: list });
   };
 
   const handleSubmit = (e) => {
@@ -193,22 +217,62 @@ const SocialForm = ({ onSubmit, initialData = {} }) => {
       </div>
 
       {/* EXTRA */}
-      <Input
-        label="Campaign Types (comma separated)"
-        name="campaignTypes"
-        value={form.campaignTypes}
-        onChange={handleChange}
-      />
+      <div className="grid md:grid-cols-2 gap-4">
+        <Input
+          label="Campaign Types (comma separated)"
+          name="campaignTypes"
+          value={form.campaignTypes}
+          onChange={handleChange}
+        />
 
-      <Input
-        label="Tools Used (comma separated)"
-        name="toolsUsed"
-        value={form.toolsUsed}
-        onChange={handleChange}
-      />
+        <Input
+          label="Tools Used (comma separated)"
+          name="toolsUsed"
+          value={form.toolsUsed}
+          onChange={handleChange}
+        />
+      </div>
+
+      {/* TOP POSTS */}
+      <div className="space-y-4">
+        <div className="flex justify-between items-center">
+          <h3 className="text-sm font-medium">Top Posts (Previews)</h3>
+          <button type="button" onClick={addPost}>
+            <Plus size={16} />
+          </button>
+        </div>
+
+        {form.topPosts.map((post, idx) => (
+          <div key={idx} className="space-y-2 border-b border-white/5 pb-4 last:border-0">
+            <div className="flex gap-2">
+              <input
+                placeholder="Image URL"
+                value={post.image}
+                onChange={(e) => updatePost(idx, "image", e.target.value)}
+                className="flex-1 p-2 rounded bg-bg-canvas border border-white/10 text-sm"
+              />
+              <input
+                placeholder="Post Link"
+                value={post.link}
+                onChange={(e) => updatePost(idx, "link", e.target.value)}
+                className="flex-1 p-2 rounded bg-bg-canvas border border-white/10 text-sm"
+              />
+              <button type="button" onClick={() => removePost(idx)}>
+                <X size={14} />
+              </button>
+            </div>
+            <input
+              placeholder="Description (short)"
+              value={post.description}
+              onChange={(e) => updatePost(idx, "description", e.target.value)}
+              className="w-full p-2 rounded bg-bg-canvas border border-white/10 text-sm"
+            />
+          </div>
+        ))}
+      </div>
 
       {/* OPTIONS */}
-      <div className="flex items-center justify-between">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <label className="flex items-center gap-2 text-sm text-white/70">
           <input
             type="checkbox"
@@ -229,6 +293,28 @@ const SocialForm = ({ onSubmit, initialData = {} }) => {
             className="accent-primary"
           />
           Managed
+        </label>
+
+        <label className="flex items-center gap-2 text-sm text-white/70">
+          <input
+            type="checkbox"
+            name="isPersonal"
+            checked={form.isPersonal}
+            onChange={handleChange}
+            className="accent-primary"
+          />
+          Personal
+        </label>
+
+        <label className="flex items-center gap-2 text-sm text-white/70">
+          <input
+            type="checkbox"
+            name="isActive"
+            checked={form.isActive}
+            onChange={handleChange}
+            className="accent-primary"
+          />
+          Active
         </label>
       </div>
 

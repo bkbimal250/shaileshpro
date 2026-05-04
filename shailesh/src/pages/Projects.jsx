@@ -27,7 +27,7 @@ const Projects = () => {
         <Container>
           <div className="max-w-3xl">
             <h1 className="text-4xl md:text-5xl font-bold">
-              Projects
+              My Works and projects Projects
             </h1>
 
             <p className="text-white/60 mt-4">

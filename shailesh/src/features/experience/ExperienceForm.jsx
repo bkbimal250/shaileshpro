@@ -26,6 +26,8 @@ const ExperienceForm = ({ onSubmit, initialData = {} }) => {
     order: initialData.order || 0,
     metrics: initialData.metrics || [],
     projectLinks: initialData.projectLinks || [],
+    companyLogo: initialData.companyLogo || "",
+    isActive: initialData.isActive !== undefined ? initialData.isActive : true,
   });
 
   const handleChange = (e) => {
@@ -106,16 +108,34 @@ const ExperienceForm = ({ onSubmit, initialData = {} }) => {
         )}
       </div>
 
-      <label className="flex items-center gap-2 text-sm text-white/70">
-        <input
-          type="checkbox"
-          name="isCurrent"
-          checked={form.isCurrent}
-          onChange={handleChange}
-          className="accent-primary"
-        />
-        Currently working here
-      </label>
+      <div className="grid md:grid-cols-2 gap-4">
+        <label className="flex items-center gap-2 text-sm text-white/70">
+          <input
+            type="checkbox"
+            name="isCurrent"
+            checked={form.isCurrent}
+            onChange={handleChange}
+            className="accent-primary"
+          />
+          Currently working here
+        </label>
+
+        <label className="flex items-center gap-2 text-sm text-white/70">
+          <input
+            type="checkbox"
+            name="isActive"
+            checked={form.isActive}
+            onChange={handleChange}
+            className="accent-primary"
+          />
+          Active (Visible on Site)
+        </label>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-4">
+        <Input name="companyLogo" label="Company Logo URL" value={form.companyLogo} onChange={handleChange} />
+        <Input name="order" type="number" label="Display Order (higher = first)" value={form.order} onChange={handleChange} />
+      </div>
 
       {/* DESCRIPTION */}
       <div>

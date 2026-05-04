@@ -43,7 +43,7 @@ export default function Navbar() {
             <img
               src="/shailesh_logo.png"
               alt="Logo"
-              className="h-12 w-25 object-contain"
+              className="h-[70px] w-25 object-contain"
             />
           </Link>
 

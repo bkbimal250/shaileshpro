@@ -10,11 +10,14 @@ const ProjectForm = ({ onSubmit, initialData = {} }) => {
     title: initialData.title || "",
     description: initialData.description || "",
     image: initialData.image || "",
+    video: initialData.video || "",
     gallery: initialData.gallery || [],
     category: initialData.category || "Marketing",
     liveUrl: initialData.liveUrl || "",
     githubUrl: initialData.githubUrl || "",
     results: initialData.results || "",
+    challenges: initialData.challenges || "",
+    solution: initialData.solution || "",
     tools: initialData.tools ? initialData.tools.join(", ") : "",
     featured: initialData.featured || false,
     order: initialData.order || 0,
@@ -97,10 +100,38 @@ const ProjectForm = ({ onSubmit, initialData = {} }) => {
         <textarea
           name="description"
           rows={3}
-          className="w-full p-3 rounded-lg bg-bg-canvas border border-white/10 text-sm outline-none"
+          className="w-full p-3 rounded-lg bg-bg-canvas border border-white/10 text-sm outline-none focus:border-primary"
           value={form.description}
           onChange={handleChange}
           required
+        />
+      </div>
+
+      {/* CHALLENGES */}
+      <div>
+        <label className="text-sm text-white/50 mb-1 block">
+          Challenges
+        </label>
+        <textarea
+          name="challenges"
+          rows={3}
+          className="w-full p-3 rounded-lg bg-bg-canvas border border-white/10 text-sm outline-none focus:border-primary"
+          value={form.challenges}
+          onChange={handleChange}
+        />
+      </div>
+
+      {/* SOLUTION */}
+      <div>
+        <label className="text-sm text-white/50 mb-1 block">
+          Solution
+        </label>
+        <textarea
+          name="solution"
+          rows={3}
+          className="w-full p-3 rounded-lg bg-bg-canvas border border-white/10 text-sm outline-none focus:border-primary"
+          value={form.solution}
+          onChange={handleChange}
         />
       </div>
 
@@ -110,6 +141,13 @@ const ProjectForm = ({ onSubmit, initialData = {} }) => {
           label="Image URL"
           name="image"
           value={form.image}
+          onChange={handleChange}
+        />
+        {/* reels links */}
+        <Input
+          label="reels video URL"
+          name="video"
+          value={form.video}
           onChange={handleChange}
         />
 
@@ -153,6 +191,8 @@ const ProjectForm = ({ onSubmit, initialData = {} }) => {
           value={form.liveUrl}
           onChange={handleChange}
         />
+
+
 
         <Input
           label="GitHub URL"
