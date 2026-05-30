@@ -7,6 +7,10 @@ const projectSchema = new mongoose.Schema({
   image: String,
   gallery: [String], // multiple images
 
+  reels_url: String,
+  // video_url for reels uploads
+  video: String,
+
   liveUrl: String,
   githubUrl: String,
 
